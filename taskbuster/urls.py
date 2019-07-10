@@ -16,8 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include, re_path
-from .views import home
+from django.conf.urls.i18n import i18n_patterns
+from .views import home, home_files
+
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    re_path(r'^$', home, name='home'),
+    re_path(r'^(?P<filename>(robots.txt)|(humans.txt))$',
+        home_files, name='home-files'),
 ]
+urlpatterns = i18n_patterns(
+    re_path(r'^$', home, name='home'),
+    re_path(r'^admin/', admin.site.urls),
+)
